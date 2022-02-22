@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
 
-type TaskType = {
+export type TaskType = {
     id: string
     title: string
     isDone: boolean
@@ -16,6 +16,7 @@ type PropsType = {
     changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
     filter: FilterValuesType
     todolistId:string
+    removeTodolist:(todolistId:string)=>void
 }
 
 export function Todolist(props: PropsType) {
@@ -46,10 +47,11 @@ export function Todolist(props: PropsType) {
     const onAllClickHandler = () => props.changeFilter(props.todolistId, "all");
     const onActiveClickHandler = () => props.changeFilter(props.todolistId, "active");
     const onCompletedClickHandler = () => props.changeFilter(props.todolistId, "completed");
-
+const onClickHandler =()=>{props.removeTodolist(props.todolistId)}
 
     return <div>
         <h3>{props.title}</h3>
+        <button onClick={onClickHandler}>X</button>
         <div>
             <input value={title}
                    onChange={onChangeHandler}
