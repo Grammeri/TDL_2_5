@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
 import Button from "./components/Button";
+import Input from "./components/Input";
 
 export type TaskType = {
     id: string
@@ -21,29 +22,15 @@ type PropsType = {
 }
 
 export function Todolist(props: PropsType) {
-    console.log(props)
+
     let [title, setTitle] = useState("")
     let [error, setError] = useState<string | null>(null)
+    console.log(title)
 
-    const addTask = () => {
-        if (title.trim() !== "") {
-            props.addTask(props.todolistId, title.trim());
-            setTitle("");
-        } else {
-            setError("Title is required");
-        }
+    const addTaskHandlerForAddTitle = () =>{
+        props.addTask(props.todolistId, title)
     }
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
-        if (e.charCode === 13) {
-            addTask();
-        }
-    }
     const onClickHandlerToRemoveTdl = () => {
         props.removeTodolist(props.todolistId)
     }
@@ -60,23 +47,25 @@ export function Todolist(props: PropsType) {
         props.removeTask(props.todolistId, Tid)
     }
 
+    const addTaskHandlerForEnter = () =>{
+        props.addTask(props.todolistId, title)
+    }
+
     return <div>
         <h3>{props.title}</h3>
-       {/* <button onClick={onClickHandler}>X</button>*/}
-        <Button callBack={onClickHandlerToRemoveTdl} name={"X"}/>
-        <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
-            />
-            <button onClick={addTask}>+</button>
-            {error && <div className="error-message">{error}</div>}
-        </div>
+<Button callBack={onClickHandlerToRemoveTdl} name={"x"}/>
+        {/*<InputWithBtn todolistId={props.todolistId}
+        addTask={props.addTask}
+        />*/}
+<Input setTitle={setTitle}
+       title={title}
+       addTask={addTaskHandlerForEnter}
+/>
+        <Button callBack={addTaskHandlerForAddTitle}/>
         <ul>
             {
                 props.tasks.map(t => {
-                   /* const onClickHandler = () => props.removeTask(props.todolistId, t.id)*/
+
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeTaskStatus(props.todolistId, t.id, e.currentTarget.checked);
                     }
@@ -86,30 +75,15 @@ export function Todolist(props: PropsType) {
                                onChange={onChangeHandler}
                                checked={t.isDone}/>
                         <span>{t.title}</span>
-                        {/*<button onClick={onClickHandler}>x</button>*/}
-                        <Button callBack={()=>{onClickHandlerToRemoveTask(t.id)}} name={"X"}/>
+                          <Button callBack={()=>{onClickHandlerToRemoveTask(t.id)}} name={"X"}/>
                     </li>
                 })
             }
         </ul>
         <div>
-{/*            <button className={props.filter === 'all' ? "active-filter" : ""}
-                    onClick={onAllClickHandler}>All</button>
-            <button className={props.filter === 'active' ? "active-filter" : ""}
-                    onClick={onActiveClickHandler}>Active</button>
-            <button className={props.filter === 'completed' ? "active-filter" : ""}
-                    onClick={onCompletedClickHandler}>Completed</button>*/}
-{/*            <button className={props.filter === 'all' ? "active-filter" : ""}
-                    onClick={()=>{tsarFoo("all")}}>All</button>
-            <button className={props.filter === 'active' ? "active-filter" : ""}
-                    onClick={()=>{tsarFoo("active")}}>Active</button>
-            <button className={props.filter === 'completed' ? "active-filter" : ""}
-                    onClick={()=>{tsarFoo("completed")}}>Completed</button>*/}
             <Button name={"all"} callBack={()=>{tsarFoo("all")}} filter={props.filter}/>
             <Button name={"completed"} callBack={()=>{tsarFoo("completed")}} filter={props.filter}/>
             <Button name={"active"} callBack={()=>{tsarFoo("active")}} filter={props.filter}/>
-
-
         </div>
     </div>
 }

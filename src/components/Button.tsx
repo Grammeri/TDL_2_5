@@ -3,7 +3,7 @@ import {FilterValuesType} from "../App";
 
 type ButtonType = {
     callBack:()=>void
-    name:string
+    name?:string
     filter?:string
 }
 
