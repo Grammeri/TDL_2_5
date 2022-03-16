@@ -11,7 +11,7 @@
   border: red 1px solid;
 }
 
-.error-message {
+.errorMessage {
   color: red;
 }
 
@@ -19,6 +19,6 @@
   background-color: aquamarine;
 }
 
-.is-done {
+.isDone {
   opacity: 0.5;
 }
